@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing Quiz</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 20px;
+            border: 2px solid #333;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+        .popup button { margin-top: 10px; }
+        .highlight { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h2>Is this email phishing or legitimate?</h2>
+    <p><strong>Sender:</strong> <span id="sender">support@apple-secure.com</span></p>
+    <p><strong>URL:</strong> <span id="url">https://apple-login.security.com</span></p>
+
+    <form id="quizForm">
+        <label>
+            <input type="radio" name="answer" value="phishing"> Phishing
+        </label>
+        <label>
+            <input type="radio" name="answer" value="legitimate"> Legitimate
+        </label>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="popup" class="popup">
+        <p id="popupText"></p>
+        <button onclick="closePopup()">Close</button>
+    </div>
+
+    <script>
+        document.getElementById("quizForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            let selectedAnswer = document.querySelector('input[name="answer"]:checked');
+            let correctAnswer = "phishing";  // The correct answer for this email
+            let sender = document.getElementById("sender").textContent;
+            let url = document.getElementById("url").textContent;
+
+            if (!selectedAnswer) {
+                alert("Please select an answer!");
+                return;
+            }
+
+            let popupText = "";
+
+            if (selectedAnswer.value !== correctAnswer) {
+                popupText = `
+                    <p><strong>Incorrect!</strong> This email is <span class="highlight">phishing</span>.</p>
+                    <p><strong>Warning:</strong> The sender email <span class="highlight">${sender}</span> looks suspicious.</p>
+                    <p>The URL <span class="highlight">${url}</span> is not an official Apple domain.</p>
+                    <p><strong>Tips:</strong></p>
+                    <ul>
+                        <li>Always check sender domains carefully.</li>
+                        <li>Look for misspellings and extra words in URLs.</li>
+                        <li>Do not click suspicious links in emails.</li>
+                    </ul>
+                `;
+            } else {
+                popupText = "<p>Correct! This email is phishing. Stay cautious!</p>";
+            }
+
+            document.getElementById("popupText").innerHTML = popupText;
+            document.getElementById("popup").style.display = "block";
+        });
+
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+    </script>
+
+</body>
+</html>

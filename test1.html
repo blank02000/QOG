@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - Phishing Quiz</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+    /* === General Page Styles === */
+    body {
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .d-none { display: none !important; }
+
+    /* === Login Container === */
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+    }
+    .login-box {
+      background: #fff;
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+    }
+    .login-box h2 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #333;
+    }
+    .login-box input[type="text"] {
+      width: 100%;
+      padding: 12px 15px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+    }
+    .login-box input[type="text"]:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+    .login-box button {
+      width: 100%;
+      background: #007bff;
+      border: none;
+      padding: 12px;
+      border-radius: 5px;
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .login-box button:hover {
+      background: #0056b3;
+    }
+
+    /* === Quiz Container === */
+    .quiz-container {
+      max-width: 60%;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      height: 70%;
+    }
+    .quiz-container h2 {
+      margin-bottom: 10px;
+    }
+    .quiz-container p {
+      margin-bottom: 20px;
+    }
+
+    /* === Email Box === */
+    .email-box {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #fff;
+      padding: 20px;
+      position: relative;
+    }
+
+    /* Sender section with avatar */
+    .email-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .sender-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #007bff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: bold;
+      margin-right: 10px;
+      font-size: 18px;
+      overflow: hidden;
+    }
+    .sender-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .email-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .email-meta {
+      display: flex;
+      align-items: center;
+    }
+    .arrow {
+      cursor: pointer;
+      font-size: 16px;
+      padding: 4px 8px;
+      margin-left: 10px;
+      background-color: #f0f0f0;
+      border-radius: 4px;
+      transition: background 0.3s ease;
+    }
+    .arrow:hover {
+      background-color: #d9d9d9;
+    }
+    .timestamp {
+      margin-left: auto;
+      font-size: 12px;
+      color: gray;
+    }
+
+    /* === Email Details (Toggled) === */
+    .email-details {
+      position: absolute;
+      top: 30%; /* Adjusted to position below the email header */
+      left: 20px;
+      width: 300px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      z-index: 10;
+      border: 1px solid #ccc;
+      display: none;
+    }
+    .email-details p {
+      margin: 0 0 5px;
+      font-size: 14px;
+    }
+
+    /* === Email Body === */
+    .email-body {
+      margin-top: 10px;
+    }
+    .email-body p {
+      margin-bottom: 10px;
+    }
+
+    /* Highlight suspicious links */
+    .text-danger {
+      color: #dc3545 !important;
+    }
+
+    /* Link hover popup */
+    .link-popup {
+      position: absolute;
+      background: #333;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      z-index: 1000;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    /* === Buttons for Phishing / Legitimate === */
+    .buttons {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .buttons .btn {
+      width: 48%;
+    }
+  </style>
+</head>
+<body>
+
+<!-- === LOGIN SECTION === -->
+<div class="login-container" id="loginContainer">
+  <div class="login-box">
+    <h2>Login</h2>
+    <input type="text" id="email" class="form-control mb-3" placeholder="Enter Email" />
+    <button class="btn btn-primary" onclick="startQuiz()">Start Quiz</button>
+  </div>
+</div>
+
+<!-- === QUIZ SECTION === -->
+<div class="quiz-container d-none" id="quizContainer">
+  <h2 id="doc-share-heading"></h2>
+  <p id="doc-share-subheading"></p>
+
+  <div class="email-box">
+    <div class="email-header">
+      <!-- Avatar (initial) -->
+      <div class="sender-avatar" id="sender-avatar">?</div>
+      <div class="email-info">
+        <strong id="sender-name"></strong>
+        <div class="email-meta">
+          <small id="email-address"></small>
+          <div class="arrow" onclick="toggleDetails()">▼</div>
+        </div>
+      </div>
+      <!-- Timestamp on the far right -->
+      <div class="timestamp" id="email-date-time"></div>
+    </div>
+
+    <!-- Toggled details panel -->
+    <div class="email-details" id="emailDetails">
+      <p><strong>From:</strong> <span id="detailed-sender"></span></p>
+      <p><strong>To:</strong> Employee</p>
+      <p><strong>Date:</strong> <span id="detailed-date"></span></p>
+      <p><strong>Subject:</strong> <span id="email-subject"></span></p>
+    </div>
+
+    <!-- Email body -->
+    <div class="email-body">
+      <p><strong id="email-greeting"></strong></p>
+      <p id="email-upper-body"></p>
+      <p id="email-lower-body"></p>
+      <p id="email-signature"></p>
+    </div>
+  </div>
+
+  <!-- Phishing / Legitimate Buttons -->
+  <div class="buttons">
+    <button class="btn btn-primary" onclick="answer(true)">Phishing</button>
+    <button class="btn btn-primary" onclick="answer(false)">Legitimate</button>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  let currentEmail = 0;
+  let correctAnswers = 0;
+  let startTime;
+
+  // Define five email templates.
+  const emails = [
+    {
+      // Template 1: Phishing - Urgent Security Update (link-only)
+      sender: "IT Helpdesk",
+      email: "it-support@company.com",
+      subject: "Urgent: Security Update Required",
+      greeting: "Dear Employee,",
+      upperBody: "To ensure security, install the latest patch immediately.",
+      lowerBody: "Download it here: <a href='https://fake-security.com' data-url='https://fake-security.com'>Download here</a>",
+      signature: "Best Regards, IT Helpdesk",
+      isPhishing: true,
+    },
+    {
+      // Template 2: Legitimate - Shared Department Budget Doc (link-only)
+      sender: "Luke Johnson",
+      email: "luke.json8000@gmail.com",
+      subject: "2025 Department Budget",
+      greeting: "Hello,",
+      upperBody: "Here is the doc that you asked for. Let me know if you need any changes.",
+      lowerBody: "Open doc: <a href='https://docs.google.com/drive/folderXYZ' data-url='https://docs.google.com/drive/folderXYZ'>Open it</a>",
+      signature: "Best, Luke",
+      isPhishing: false,
+    },
+    {
+      // Template 3: Legitimate - Project Proposal Draft (link-only)
+      sender: "Maria Gomez",
+      email: "maria.gomez@company.com",
+      subject: "Project Proposal Draft",
+      greeting: "Hi Team,",
+      upperBody: "Please review the attached project proposal draft at your earliest convenience.Previous was an error. Kindly check it for work.",
+      lowerBody: "View draft: <a href='https://docs.google.com/document/d/XYZ' data-url='https://docs.google.com/document/d/XYZ'>Click here</a>",
+      signature: "Thanks, Maria",
+      isPhishing: false,
+    },
+    {
+      // Template 4: Phishing - Fake Password Reset (link-only)
+      sender: "Security Alert",
+      email: "no-reply@security-update.com",
+      subject: "Immediate Password Reset Required",
+      greeting: "Dear User,",
+      upperBody: "Due to suspicious activities, we require you to reset your password immediately.",
+      lowerBody: "Reset here: <a href='https://malicious-password-reset.com' data-url='https://malicious-password-reset.com'>Reset now</a>",
+      signature: "Security Team",
+      isPhishing: true,
+    },
+    {
+      // Template 5: Legitimate - Monthly Performance Report (link-only)
+      sender: "IT Services",
+      email: "it-services@company.com",
+      subject: "Monthly Performance Report",
+      greeting: "Hello,",
+      upperBody: "Please review your monthly performance report attached below.",
+      lowerBody: "Open report: <a href='https://docs.google.com/spreadsheets/d/ABC' data-url='https://docs.google.com/spreadsheets/d/ABC'>View report</a>",
+      signature: "IT Services",
+      isPhishing: false,
+    }
+  ];
+
+  // Validate email format
+  function validateEmail(email) {
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return regex.test(email);
+  }
+
+  // Start the quiz
+  window.startQuiz = function () {
+    let userEmail = document.getElementById("email").value.trim();
+    if (!validateEmail(userEmail)) {
+      Swal.fire("Invalid Email", "Please enter a valid email address.", "error");
+      return;
+    }
+    document.getElementById("loginContainer").classList.add("d-none");
+    document.getElementById("quizContainer").classList.remove("d-none");
+
+    currentEmail = 0;
+    correctAnswers = 0;
+    startTime = new Date();
+
+    // Shuffle emails randomly
+    emails.sort(() => Math.random() - 0.5);
+    loadEmail(emails[currentEmail]); // Call loadEmail with the first email
+  };
+
+  // Load email content
+  function loadEmail(email) {
+    // Set header to mimic "X shared a document"
+    document.getElementById("doc-share-heading").innerText =
+      `${email.sender} shared a link`;
+    document.getElementById("doc-share-subheading").innerText =
+      `${email.sender} (${email.email}) has sent you the following link:`;
+
+    // Populate sender info
+    document.getElementById("sender-name").innerText = email.sender;
+    document.getElementById("email-address").innerText = email.email;
+    document.getElementById("detailed-sender").innerText = email.email;
+
+    // Set sender avatar using the first letter of the sender's name
+    const avatarInitial = email.sender.trim().charAt(0).toUpperCase();
+    document.getElementById("sender-avatar").innerText = avatarInitial;
+
+    // Set subject as document title
+    document.getElementById("email-subject").innerText = email.subject;
+
+    // Set greeting and body text
+    document.getElementById("email-greeting").innerText = email.greeting;
+    document.getElementById("email-upper-body").innerText = email.upperBody;
+    document.getElementById("email-signature").innerText = email.signature;
+    document.getElementById("email-lower-body").innerHTML = email.lowerBody;
+
+    // Add hover and click functionality to links
+    const links = document.querySelectorAll("#email-lower-body a");
+    links.forEach(link => {
+      // Hover effect: Show a small popup with the URL
+      link.addEventListener("mouseenter", (e) => {
+        const url = e.target.getAttribute("data-url");
+        const popup = document.createElement("div");
+        popup.className = "link-popup";
+        popup.innerText = url;
+        document.body.appendChild(popup);
+
+        const rect = e.target.getBoundingClientRect();
+        popup.style.top = `${rect.bottom + window.scrollY}px`;
+        popup.style.left = `${rect.left + window.scrollX}px`;
+
+        e.target.addEventListener("mouseleave", () => {
+          popup.remove();
+        });
+      });
+
+      // Click effect: Show SweetAlert2 popup with the URL
+      link.addEventListener("click", (e) => {
+        e.preventDefault(); // Prevent the default link behavior
+        const url = e.target.getAttribute("data-url");
+
+        // Show SweetAlert2 popup with the URL
+        Swal.fire({
+          title: "Link Preview",
+          text: `This link goes to: ${url}`,
+          icon: "info",
+          timer: 2000, // Automatically close after 2 seconds
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
+      });
+    });
+
+    // Update timestamps
+    let now = new Date();
+    document.getElementById("email-date-time").innerText = now.toLocaleString();
+    document.getElementById("detailed-date").innerText = now.toLocaleString();
+
+    // Hide email details panel by default
+    document.getElementById("emailDetails").style.display = "none";
+  }
+
+  // Toggle email details panel
+  window.toggleDetails = function () {
+    const details = document.getElementById("emailDetails");
+    details.style.display = details.style.display === "block" ? "none" : "block";
+  };
+
+  // Handle answer button clicks
+  window.answer = function (isPhishing) {
+    // Disable buttons to prevent multiple clicks
+    document.querySelectorAll(".buttons .btn").forEach(btn => btn.disabled = true);
+
+    let correct = isPhishing === emails[currentEmail].isPhishing;
+    let popupText = "";
+
+    if (correct) {
+        popupText = "<p>✅ Correct! This email is phishing. Stay cautious!</p>";
+    } else {
+        let sender = emails[currentEmail].sender;
+        let url = emails[currentEmail].url;
+        popupText = `
+            <p>❌ <strong>Incorrect!</strong> This email is <span class="highlight">phishing</span>.</p>
+            <p><strong>Warning:</strong> The sender email <span class="highlight">${sender}</span> looks suspicious.</p>
+            <p>The URL <span class="highlight">${url}</span> is not an official domain.</p>
+            <p><strong>Tips:</strong></p>
+            <ul>
+                <li>Always check sender domains carefully.</li>
+                <li>Look for misspellings and extra words in URLs.</li>
+                <li>Do not click suspicious links in emails.</li>
+            </ul>
+        `;
+    }
+
+    // Show popup
+    Swal.fire({
+        title: correct ? "✅ Correct!" : "❌ Incorrect!",
+        html: popupText,
+        icon: correct ? "success" : "error",
+        confirmButtonText: "OK"
+    }).then(() => {
+        if (correct) correctAnswers++;
+        currentEmail++;
+
+        if (currentEmail < emails.length) {
+            // Re-enable buttons for the next question
+            document.querySelectorAll(".buttons .btn").forEach(btn => btn.disabled = false);
+            loadEmail(emails[currentEmail]); // Load next email
+        } else {
+            showQuizResults();
+        }
+    });
+  };
+
+  // Show quiz results
+  function showQuizResults() {
+    let timeTaken = Math.floor((new Date() - startTime) / 1000);
+    Swal.fire({
+      title: "Quiz Complete!",
+      html: `
+        <p>Questions Attempted: ${emails.length}</p>
+        <p>Correct Answers: ${correctAnswers}</p>
+        <p>Time Taken: ${timeTaken} seconds</p>
+      `,
+      icon: "success",
+      confirmButtonText: "Return to Login"
+    }).then(() => location.reload());
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing Email Quiz</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .gmail-card {
+            border: 1px solid #e1e1e1;
+            border-radius: 8px;
+            margin: 20px auto;
+            max-width: 800px;
+            background: white;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        .gmail-header {
+            padding: 16px;
+            border-bottom: 1px solid #e1e1e1;
+            display: flex;
+            align-items: center;
+            background: #f6f8fc;
+        }
+        .gmail-sender-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .gmail-sender-initial {
+            background: #4285f4;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+        }
+        .gmail-email-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .gmail-content {
+            padding: 20px;
+            font-family: 'Google Sans', Roboto, sans-serif;
+            line-height: 1.5;
+            color: #202124;
+        }
+        .gmail-date-time {
+            color: #5f6368;
+            font-size: 0.875rem;
+        }
+        .gmail-action-btn {
+            background: none;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 50%;
+            color: #5f6368;
+        }
+        .gmail-action-btn:hover {
+            background: rgba(0,0,0,0.05);
+        }
+        .gmail-app-header {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            background: #f6f8fc;
+            border-bottom: 1px solid #e1e1e1;
+        }
+        .gmail-app-name {
+            font-family: 'Google Sans', Roboto, sans-serif;
+            color: #5f6368;
+            font-size: 1.25rem;
+            margin-left: 12px;
+        }
+        .hidden {
+            display: none;
+        }
+        .actions {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .actions button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .phishing-btn {
+            background: #d32f2f;
+            color: white;
+        }
+        .real-btn {
+            background: #388e3c;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Screen -->
+        <div id="login-screen">
+            <h2>Login</h2>
+            <input type="email" id="email" placeholder="Enter your email" required>
+            <button onclick="startQuiz()">Start Quiz</button>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden">
+            <h3 id="email-subject"></h3>
+            
+            
+            <div class="email-card gmail-card">
+                <div class="gmail-header">
+                    <div class="gmail-sender-info">
+                        <span id="sender-initial" class="gmail-sender-initial"></span>
+                        <div class="sender-details">
+                            <p id="sender-name" class="sender-name" style="font-weight: 600;"></p>
+                            <p id="recipient" style="color: #5f6368; font-size: 0.875rem;">to me</p>
+                        </div>
+                    </div>
+                    <div class="gmail-email-actions">
+                        <button class="gmail-action-btn">
+                            <i data-lucide="corner-up-left"></i>
+                        </button>
+                        <button class="gmail-action-btn">
+                            <i data-lucide="trash-2"></i>
+                        </button>
+                        <button class="gmail-action-btn">
+                            <i data-lucide="more-vertical"></i>
+                        </button>
+                        <div class="gmail-date-time">
+                            <span id="email-date-time"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="gmail-content">
+                    <p id="email-greeting"></p>
+                    <p id="email-upper-body"></p>
+                    <p id="email-lower-body"></p>
+                    <a id="email-link" class="hidden" href="#" style="color: #1a73e8; text-decoration: none;"></a>
+                    <p id="email-signature" style="margin-top: 20px;"></p>
+                </div>
+            </div>
+            <div class="actions">
+                <button onclick="answer(true)" class="phishing-btn">Phishing</button>
+                <button onclick="answer(false)" class="real-btn">Real</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        window.onload = function() {
+            lucide.createIcons();
+        };
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

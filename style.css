@@ -1,0 +1,248 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hidden {
+    display: none;
+}
+
+/* Login Screen */
+#login-screen {
+    text-align: center;
+}
+
+#login-screen h2 {
+    margin-bottom: 20px;
+}
+
+#login-screen input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#login-screen button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#login-screen button:hover {
+    background-color: #0056b3;
+}
+
+/* Email Card */
+.email-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #fff;
+    margin-bottom: 20px; /* Add space between card and buttons */
+}
+
+.email-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.sender-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sender-initial {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.sender-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.sender-name {
+    font-weight: bold;
+    margin: 0;
+}
+
+#recipient {
+    margin: 0;
+    color: #666;
+}
+.email-actions {
+    display: flex; 
+    gap: 4px; /* Reduce spacing between buttons */
+    align-items: center;
+}
+
+.action-btn {
+    width: 28px; /* Decrease button size */
+    height: 28px;
+    padding: 2px; /* Reduce padding */
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.action-btn img {
+    width: 100%; /* Ensure images fit the buttons */
+    height: auto;
+}
+
+
+.action-btn:hover {
+    color: #007bff;
+}
+
+.email-date-time {
+    font-size: 12px;
+    color: #666;
+}
+
+.email-content {
+    margin-top: 20px;
+}
+
+#email-greeting {
+    margin: 0;
+}
+
+#email-subject {
+    margin: 10px 0;
+}
+
+#email-body {
+    margin: 10px 0;
+}
+
+#email-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+#email-link:hover {
+    text-decoration: underline;
+}
+
+#email-signature {
+    margin: 10px 0;
+    white-space: pre-line;
+}
+
+/* Buttons Styling */
+.actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center; /* Center the buttons horizontally */
+}
+
+.phishing-btn, .real-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.phishing-btn {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.phishing-btn:hover {
+    background-color: #c82333;
+}
+
+.real-btn {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.real-btn:hover {
+    background-color: #218838;
+}
+/* 🎨 Cartoon Popup */
+.swal-cartoon-popup {
+    border-radius: 20px !important;
+    background: linear-gradient(135deg, #ffeb3b, #ff9800) !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
+    border: 5px solid #ff5722 !important;
+    animation: bounce 0.8s infinite alternate ease-in-out;
+}
+
+/* 🖋️ Cartoon Title */
+.swal-cartoon-title {
+    font-size: 28px !important;
+    font-weight: bold !important;
+    color: #d32f2f !important;
+    text-shadow: 2px 2px #fff !important;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+/* 📜 Cartoon Text */
+.swal-text {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2e7d32;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+/* 🚀 Cartoon Button */
+.swal-cartoon-btn {
+    background-color: #2196f3 !important;
+    color: #fff !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+    border: 3px solid #0d47a1 !important;
+    border-radius: 12px !important;
+    padding: 12px 24px !important;
+    text-shadow: 1px 1px #000 !important;
+    transition: all 0.3s ease-in-out !important;
+}
+
+.swal-cartoon-btn:hover {
+    background-color: #0d47a1 !important;
+    transform: scale(1.1) !important;
+}
+
+/* ✨ Bouncy Animation */
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-10px);
+    }
+}

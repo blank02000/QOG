@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing Email Quiz</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="container">
+        <div id="login-screen">
+            <h2>Login</h2>
+            <input type="email" id="email" placeholder="Enter your email" required>
+            <button onclick="startQuiz()">Start Quiz</button>
+        </div>
+        <div id="quiz-screen" class="hidden">
+            <h3 id="email-subject"></h3>
+            <div class="email-card">
+           
+                <div class="email-header">
+                   
+                    <div class="sender-info">
+                        <span id="sender-initial" class="sender-initial"></span>
+                        <div class="sender-details">
+                            <p id="sender-name" class="sender-name"></p>
+                            <p id="recipient">To: <span id="user-email"></span></p>
+                        </div>
+                        <div id="sender-popup" class="sender-popup hidden">
+                            <p><strong>Name:</strong> <span id="popup-sender-name"></span></p>
+                            <p><strong>Email:</strong> <span id="popup-sender-email"></span></p>
+                        </div>
+                    </div>
+                    <div class="email-actions">
+                        
+                        <div class="email-actions">
+                            <button class="action-btn" title="Reply">
+                                <img src="https://prophish-uploads.s3.ap-south-1.amazonaws.com/Wallpapers/0/Screenshot%202025-03-04%20141855.png" alt="Reply">
+                            </button>
+                            <button class="action-btn" title="Reply All">
+                                <img src="https://prophish-uploads.s3.ap-south-1.amazonaws.com/Wallpapers/0/Screenshot%202025-03-04%20141844.png" alt="Reply All">
+                            </button>
+                            <button class="action-btn" title="Forward">
+                                <img src="https://prophish-uploads.s3.ap-south-1.amazonaws.com/Wallpapers//Screenshot%202025-03-04%20141832.png" alt="Forward">
+                            </button>
+                        
+                            <!-- Date and Time in One Paragraph -->
+                            <div class="email-date-time">
+                                <p id="email-date-time"></p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="email-content">
+                    <p id="email-greeting"></p>
+                    <!-- <h3 id="email-subject"></h3> -->
+                    <p id="email-upper-body"></p>
+                    
+                    <p id="email-lower-body"></p>
+                    <a id="email-link" class="hidden" href="#" title=""></a>
+                    <p id="email-signature"></p>
+                </div>
+            </div>
+            <div class="actions">
+                <button onclick="answer(true)" class="phishing-btn">Phishing</button>
+                <button onclick="answer(false)" class="real-btn">Real</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="script.js"></script>
+</body>
+</html>
